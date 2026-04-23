@@ -79,9 +79,20 @@ docker run -p 8080:8080 \
 
 ## 🔐 Authentication
 
-The application is protected by Basic HTTP Authentication to secure the expensive LLM execution endpoints.
+The application is protected by Basic HTTP Authentication to secure the expensive LLM execution endpoints. 
 
-*   **Username:** `admin`
-*   **Password:** `vibe2026`
+You can configure the credentials by setting the following environment variables when running the server or Docker container:
+*   `VIBE_USERNAME` (defaults to `admin`)
+*   `VIBE_PASSWORD` (defaults to `admin`)
 
-When you navigate to `http://localhost:8080`, simply enter these credentials to access the interactive split-screen terminal and live preview.
+Example Docker run with custom credentials:
+```bash
+docker run -p 8080:8080 \
+  -e GOOGLE_CLOUD_PROJECT="your-gcp-project-id" \
+  -e GOOGLE_CLOUD_LOCATION="global" \
+  -e GEMINI_USE_VERTEX="true" \
+  -e VIBE_USERNAME="your_username" \
+  -e VIBE_PASSWORD="your_secure_password" \
+  -v ~/.config/gcloud:/root/.config/gcloud \
+  vibe-swarm
+```

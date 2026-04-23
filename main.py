@@ -102,11 +102,13 @@ async def basic_auth(request: Request, call_next):
         encoded_credentials = auth_header.split(" ")[1]
         decoded_credentials = base64.b64decode(encoded_credentials).decode("utf-8")
         username, password = decoded_credentials.split(":", 1)
-        
-        if username != "admin" or password != "vibe2026":
+
+        expected_username = os.environ.get("VIBE_USERNAME", "admin")
+        expected_password = os.environ.get("VIBE_PASSWORD", "admin")
+
+        if username != expected_username or password != expected_password:
             return Response("Unauthorized. Invalid credentials.", status_code=401, headers={"WWW-Authenticate": "Basic"})
-    except Exception:
-        return Response("Unauthorized. Invalid auth format.", status_code=401, headers={"WWW-Authenticate": "Basic"})
+    except Exception:        return Response("Unauthorized. Invalid auth format.", status_code=401, headers={"WWW-Authenticate": "Basic"})
         
     return await call_next(request)
 
